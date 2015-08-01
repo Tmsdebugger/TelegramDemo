@@ -7,7 +7,6 @@ using System.Threading.Tasks;
 using System.Xml;
 using TelegramDemo.Common;
 using TelegramDemo.Core;
-using TelegramDemo.Schema;
 
 namespace TelegramDemo.Util
 {
