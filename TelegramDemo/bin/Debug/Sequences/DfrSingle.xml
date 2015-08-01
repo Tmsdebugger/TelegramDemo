@@ -1,0 +1,499 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Telegrams>
+
+<FunctionUnit>
+<APId>F3</APId>
+<Name>FLC</Name>
+</FunctionUnit>
+
+<FunctionUnit>
+<APId>F0</APId>
+<Name>XCU</Name>
+</FunctionUnit>
+
+<FunctionUnit>
+<APId>5D</APId>
+<Name>TUI_IF</Name>
+</FunctionUnit>
+
+<FunctionUnit>
+<APId>50</APId>
+<Name>GEN_IF</Name>
+</FunctionUnit>
+
+<FunctionUnit>
+<APId>E1</APId>
+<Name>CCU_IF</Name>
+</FunctionUnit>
+
+<FunctionUnit>
+<APId>E2</APId>
+<Name>SCU_IF</Name>
+</FunctionUnit>
+
+<!-- OGP and Generator Setup -->
+<Telegram>
+<Type>sAuslBed</Type>
+<Sender>E2</Sender>
+<Receiver>F0</Receiver>
+<Para>BEDEINH=ACS_REMOTE_FOOTSWITCH_1,DL=1,VORBEREITUNG=0,HK=0</Para>
+<Description>control xray</Description>
+</Telegram>
+
+<Telegram>
+<Type>sDLAusl</Type>
+<Sender>F0</Sender>
+<Receiver>F3,5D,50</Receiver>
+<Para>DL=1,ACQ_INDEX=12794</Para>
+<Description>fluoro release, to generator</Description>
+</Telegram>
+
+<Telegram>
+<Type>STUIBUTTONS_2</Type>
+<Sender>F3</Sender>
+<Receiver>5D</Receiver>
+<Para>TUI_ITEM=BAR_PROGRESS,ITEM_STATE=HIDDEN</Para>
+<Description>sync TUI gui</Description>
+</Telegram>
+
+<Telegram>
+<Type>iStatusGenAufn</Type>
+<Sender>50</Sender>
+<Receiver>F0</Receiver>
+<Para>HEIZGOK=1,ANODEOK=1,STRABEREIT=1</Para>
+<Description>status of the generator for exposure, Only if all of the three Parameters (filament, rotor and ready for acq) are set to "1" an exposure can be released.
+</Description>
+</Telegram>
+
+<Telegram>
+<Type>iStrahlgDL</Type>
+<Sender>50</Sender>
+<Receiver>F0</Receiver>
+<Para>STRAHLUNG=1</Para>
+<Description>X-ray for fluoro is on, that is, generator is doing radiation</Description>
+</Telegram>
+
+<Telegram>
+<Type>iXray</Type>
+<Sender>F0</Sender>
+<Receiver>F3,5D,50,E1</Receiver>
+<Para>XRAY=1</Para>
+<Description>X-ray display control, 2 means Acqusition, 1 means Fluoro, 0 means No Xray</Description>
+</Telegram>
+
+<Telegram>
+<Type>iAnlBereit</Type>
+<Sender>F0</Sender>
+<Receiver>F3,5D,E1</Receiver>
+<Para>ANLAUFNBEREIT=1,ANLDLBEREI=1</Para>
+<Description>overall system ready status for fluoro or acquisition</Description>
+</Telegram>
+
+<!-- repeat for fluoro-->
+<Telegram>
+<Type>iBsignal</Type>
+<Sender>F3</Sender>
+<Receiver>50</Receiver>
+<Para>BSIGNAL=953,ACQ_INDEX=12794,FRAME_INDEX=1</Para>
+<Description>actual B-signal of last exposure of fluoro</Description>
+</Telegram>
+
+<Telegram>
+<Type>iDLPulsedDaten</Type>
+<Sender>50</Sender>
+<Receiver>F0</Receiver>
+<Para>KVIST=70,MAIST=8.1,PULSETIME=60,DLABW=9*0.25BP</Para>
+<Description>current fluoro X-ray parameter of pulsed fluoro, Is used to feed the tube load calculator, display of the fluoro para, calculate the forecast for exposures in case of 0-pnt tech</Description>
+</Telegram>
+
+<Telegram>
+<Type>iDLPulsedIstAnz</Type>
+<Sender>F0</Sender>
+<Receiver>F3,5D</Receiver>
+<Para>KVDL=55.6,MA=3.9,PULSETIME=3.5,MIN=1</Para>
+<Description>display of the current fluoro parameters in case of pulsed fluoro</Description>
+</Telegram>
+
+<Telegram>
+<Type>iDLIstAnz</Type>
+<Sender>F0</Sender>
+<Receiver>F3,5D</Receiver>
+<Para>KVDL=56,MA=0.2,MIN=1</Para>
+<Description>display of the current fluoro parameters in case of non-pulsed fluoro</Description>
+</Telegram>
+
+<!-- repeat for fluoro-->
+
+<Telegram>
+<Type>sAuslBed</Type>
+<Sender>E2</Sender>
+<Receiver>F0</Receiver>
+<Para>BEDEINH=ACS_REMOTE_FOOTSWITCH_1,DL=0,VORBEREITUNG=0,HK=0</Para>
+<Description>control xray</Description>
+</Telegram>
+
+<Telegram>
+<Type>sDLAusl</Type>
+<Sender>F0</Sender>
+<Receiver>F3,5D,50</Receiver>
+<Para>DL=0,ACQ_INDEX=12794</Para>
+<Description>fluoro release, to generator</Description>
+</Telegram>
+
+<Telegram>
+<Type>iAsuStatus</Type>
+<Sender>F3</Sender>
+<Receiver>F0</Receiver>
+<Para>DFRAUFNBEREIT=0,DFRDLBEREIT=0</Para>
+<Description>FLC status for acquisition or fluoro. ASU = Acquisition Sync Unit</Description>
+</Telegram>
+
+<Telegram>
+<Type>iBsignal</Type>
+<Sender>F3</Sender>
+<Receiver>50</Receiver>
+<Para>BSIGNAL=105,ACQ_INDEX=12794,FRAME_INDEX=65</Para>
+<Description>actual B-signal of last exposure of fluoro</Description>
+</Telegram>
+
+<Telegram>
+<Type>iDLPulsedDaten</Type>
+<Sender>50</Sender>
+<Receiver>F0</Receiver>
+<Para>KVIST=55.6,MAIST=3.9,PULSETIME=3.5,DLABW=0*0.25BP</Para>
+<Description>current fluoro X-ray parameter of pulsed fluoro, Is used to feed the tube load calculator, display of the fluoro para, calculate the forecast for exposures in case of 0-pnt tech</Description>
+</Telegram>
+
+
+<Telegram>
+<Type>sAufnDaten</Type>
+<Sender>F0</Sender>
+<Receiver>50</Receiver>
+<Para>TECHNIK=_2_PUNKT_TECHNIK,MODE=0,KV=48,MAS=0.6,FOKUS=GROSSER_FOKUS</Para>
+<Description>X-ray data for the next exposure</Description>
+</Telegram>
+
+<Telegram>
+<Type>iGenAnz</Type>
+<Sender>F0</Sender>
+<Receiver>F3,5D</Receiver>
+<Para>Technik=DR_0_PUNKT_TECHNIK,KVAUTO=1</Para>
+<Description>generator data display</Description>
+</Telegram>
+
+<Telegram>
+<Type>sIonDaten</Type>
+<Sender>F0</Sender>
+<Receiver>50</Receiver>
+<Para>IONCH=6</Para>
+<Description>selecting AEC data in generator for acquisition</Description>
+</Telegram>
+
+<Telegram>
+<Type>iIonAnz</Type>
+<Sender>F0</Sender>
+<Receiver>F3,5D</Receiver>
+<Para>FOLIEEMPF=800,FOLIE=0</Para>
+<Description>Meas field display; FOLIE means H(0) U(1) D(2)</Description>
+</Telegram>
+
+<Telegram>
+<Type>iDfrAbschaltung</Type>
+<Sender>F3</Sender>
+<Receiver>F0</Receiver>
+<Para>ABSCHGRUND=MAX_SZENENLAENGE</Para>
+<Description>reason why DFR has stopped the acquisition</Description>
+</Telegram>
+
+<Telegram>
+<Type>iAsuStatus</Type>
+<Sender>F3</Sender>
+<Receiver>F0</Receiver>
+<Para>DFRAUFNBEREIT=1,DFRDLBEREIT=1</Para>
+<Description>FLC status for acquisition or fluoro. ASU = Acquisition Sync Unit</Description>
+</Telegram>
+
+<Telegram>
+<Type>iStrahlgDL</Type>
+<Sender>50</Sender>
+<Receiver>F0</Receiver>
+<Para>STRAHLUNG=0</Para>
+<Description>X-ray for fluoro is on or not</Description>
+</Telegram>
+
+<Telegram>
+<Type>iXray</Type>
+<Sender>F0</Sender>
+<Receiver>F3,5D,50,E1</Receiver>
+<Para>XRAY=0</Para>
+<Description>X-ray display control, 2 means Acqusition, 1 means Fluoro, 0 means No Xray</Description>
+</Telegram>
+
+<Telegram>
+<Type>iWaterValAcq</Type>
+<Sender>F0</Sender>
+<Receiver>F3</Receiver>
+<Para>ACQ_INDEX=12794,WW=105*0.25BP,KVIST=55.6,MASIST=0.01</Para>
+<Description>Data for doseregulation acquisition</Description>
+</Telegram>
+
+<Telegram>
+<Type>iStatusGenAufn</Type>
+<Sender>50</Sender>
+<Receiver>F0</Receiver>
+<Para>HEIZGOK=0,ANODEOK=0,STRABEREIT=0</Para>
+<Description>status of the generator for exposure, Only if all of the three Parameters (filament, rotor and ready for acq) are set to "1" an exposure can be released.
+</Description>
+</Telegram>
+
+<Telegram>
+<Type>sAuslBed</Type>
+<Sender>E2</Sender>
+<Receiver>F0</Receiver>
+<Para>BEDEINH=ACS_REMOTE_FOOTSWITCH_1,DL=0,VORBEREITUNG=1,HK=1</Para>
+<Description>control xray</Description>
+</Telegram>
+
+<Telegram>
+<Type>SH_PREP</Type>
+<Sender>F0</Sender>
+<Receiver>5D,E2</Receiver>
+<Para>PLACE_XR=ACS_REL_CTRL,PREPA=ACS_SET_PREP,</Para>
+<Description>FLC status, ready for exposure or fluoro?</Description>
+</Telegram>
+
+<Telegram>
+<Type>iAnlBereit</Type>
+<Sender>F0</Sender>
+<Receiver>F3,5D,E1</Receiver>
+<Para>ANLAUFNBEREIT=1,ANLDLBEREI=0</Para>
+<Description>overall system ready status for fluoro or acquisition</Description>
+</Telegram>
+
+<Telegram>
+<Type>sRegelStop</Type>
+<Sender>F0</Sender>
+<Receiver>50</Receiver>
+<Para>REGACTION=KEIN_STOP_REG_EIN</Para>
+<Description>Advising stop acquisiton regulation stop to the generator</Description>
+</Telegram>
+
+<Telegram>
+<Type>sAufnAusl</Type>
+<Sender>F0</Sender>
+<Receiver>F3,5D,50,E1</Receiver>
+<Para>VORBEREITUNG=1,HAUPTKONTAKT=0,STRAHLGBEREIT=0,ACQ_INDEX=12795</Para>
+<Description>control of X-ray for acquisition, Pre-Contact</Description>
+</Telegram>
+
+<Telegram>
+<Type>iXRPT</Type>
+<Sender>F3</Sender>
+<Receiver>F0</Receiver>
+<Para>XRPT_FL_MAX=33</Para>
+<Description>actual x-ray window</Description>
+</Telegram>
+
+<Telegram>
+<Type>sIRIS</Type>
+<Sender>F0</Sender>
+<Receiver>F3,50</Receiver>
+<Para>GRAUFILTER=GRAUFILTER_EINFAHREN,IRISREGELUNG=REGELUNG_EIN,IRISWERT=49</Para>
+<Description>In Image intensifier systems sent for controlling iris of a TV camera input in front of image intensifier; The iris will closed more when level of dose is increased</Description>
+</Telegram>
+
+<Telegram>
+<Type>iAsuStatus</Type>
+<Sender>F3</Sender>
+<Receiver>F0</Receiver>
+<Para>DFRAUFNBEREIT=1,DFRDLBEREIT=0</Para>
+<Description>FLC status for acquisition or fluoro. ASU = Acquisition Sync Unit</Description>
+</Telegram>
+
+<Telegram>
+<Type>iDoseRequested</Type>
+<Sender>F0</Sender>
+<Receiver>F3,50</Receiver>
+<Para>DOSE_REQUESTED_ACQ=391nGy,DOSE_REQUESTED_FL=8.51nGy</Para>
+<Description>XCU sends Dose requested, a new OGP is active\Zoom was changed\Framerate was changed</Description>
+</Telegram>
+
+<Telegram>
+<Type>iFilter</Type>
+<Sender>E1</Sender>
+<Receiver>F0</Receiver>
+<Para>FILTER=0,FILTERSTATUS=FILTER_POSITIONIERT</Para>
+<Description>status of CU-Filter, If a filter is moving, exosures are blocked</Description>
+</Telegram>
+
+<Telegram>
+<Type>iFlterAnz</Type>
+<Sender>F0</Sender>
+<Receiver>F3,5D</Receiver>
+<Para>FILTER_FLUORO=FLTER_2,FILTER_ACQ=0,FILTERSTATUS=FILTER_POSITIONIERT,FILTER_ACT=0</Para>
+<Description>display of collimator parameter</Description>
+</Telegram>
+
+<Telegram>
+<Type>iIris</Type>
+<Sender>F0</Sender>
+<Receiver>F3</Receiver>
+<Para>GRAUFILTER=GRAUFILTER_EINFAHREN,IRISWERT=49</Para>
+<Description>status of Iris</Description>
+</Telegram>
+
+<Telegram>
+<Type>iStatusGenAufn</Type>
+<Sender>50</Sender>
+<Receiver>F0</Receiver>
+<Para>HEIZGOK=1,ANODEOK=1,STRABEREIT=1</Para>
+<Description>status of the generator for exposure, Only if all of the three Parameters (filament, rotor and ready for acq) are set to "1" an exposure can be released.
+</Description>
+</Telegram>
+
+<Telegram>
+<Type>sAufnAusl</Type>
+<Sender>F0</Sender>
+<Receiver>F3,5D,50,E1</Receiver>
+<Para>VORBEREITUNG=1,HAUPTKONTAKT=0,STRAHLGBEREIT=1,ACQ_INDEX=12795</Para>
+<Description>control of X-ray for acquisition, Pre-Contact; STRAHLGBEREIT, mean gen is ready to xray;</Description>
+</Telegram>
+
+<Telegram>
+<Type>sAufnAusl</Type>
+<Sender>F0</Sender>
+<Receiver>F3,5D,50,E1</Receiver>
+<Para>VORBEREITUNG=1,HAUPTKONTAKT=1,STRAHLGBEREIT=1,ACQ_INDEX=12795</Para>
+<Description>control of X-ray for acquisition, Main-Contact; STRAHLGBEREIT, mean gen is ready to xray;</Description>
+</Telegram>
+
+<Telegram>
+<Type>iStrahlgDL</Type>
+<Sender>50</Sender>
+<Receiver>F0</Receiver>
+<Para>STRAHLUNG=1</Para>
+<Description>X-ray for fluoro is on or not</Description>
+</Telegram>
+
+<Telegram>
+<Type>iXray</Type>
+<Sender>F0</Sender>
+<Receiver>F3,5D,50,E1</Receiver>
+<Para>XRAY=2,ACQ_INDEX=12795</Para>
+<Description>X-ray display control, 2 means Acqusition, 1 means Fluoro, 0 means No Xray</Description>
+</Telegram>
+
+<Telegram>
+<Type>REP_BEEP</Type>
+<Sender>F0</Sender>
+<Receiver>5D</Receiver>
+<Para>BEEP_SEL=ACS_BEEP_ACQ,BEEP_FUNC=ACS_BEEP_ON</Para>
+<Description>handle the audible warning</Description>
+</Telegram>
+
+<Telegram>
+<Type>iAufnDaten</Type>
+<Sender>50</Sender>
+<Receiver>F0</Receiver>
+<Para>KVIST=47.9,MASIST=0.57,FRAME_INDEX=1</Para>
+<Description>exposure data of the last taken exposure measured by the X-ray generator</Description>
+</Telegram>
+
+<Telegram>
+<Type>iBsignal</Type>
+<Sender>F3</Sender>
+<Receiver>50</Receiver>
+<Para>BSIGNAL=171,ACQ_INDEX=12795,FRAME_INDEX=1</Para>
+<Description>actual B-signal of last exposure of fluoro</Description>
+</Telegram>
+
+<Telegram>
+<Type>iStrahlgAufn</Type>
+<Sender>50</Sender>
+<Receiver>F0</Receiver>
+<Para>STRAHLUNG=0</Para>
+<Description>X-ray for acquisition is on or not</Description>
+</Telegram>
+
+<Telegram>
+<Type>iXray</Type>
+<Sender>F0</Sender>
+<Receiver>F3,5D,50,E1</Receiver>
+<Para>XRAY=0,ACQ_INDEX=12795</Para>
+<Description>X-ray display control, 2 means Acqusition, 1 means Fluoro, 0 means No Xray</Description>
+</Telegram>
+
+<Telegram>
+<Type>iAnlBereit</Type>
+<Sender>F0</Sender>
+<Receiver>F3,5D,E1</Receiver>
+<Para>ANLAUFNBEREIT=0,ANLDLBEREI=0</Para>
+<Description>overall system ready status for fluoro or acquisition</Description>
+</Telegram>
+
+<Telegram>
+<Type>sAufnAusl</Type>
+<Sender>F0</Sender>
+<Receiver>F3,5D,50,E1</Receiver>
+<Para>VORBEREITUNG=0,HAUPTKONTAKT=0,STRAHLGBEREIT=0,ACQ_INDEX=12795</Para>
+<Description>control of X-ray for acquisition, Pre-Contact</Description>
+</Telegram>
+
+<Telegram>
+<Type>iAsuStatus</Type>
+<Sender>F3</Sender>
+<Receiver>F0</Receiver>
+<Para>DFRAUFNBEREIT=0,DFRDLBEREIT=0</Para>
+<Description>FLC status for acquisition or fluoro. ASU = Acquisition Sync Unit</Description>
+</Telegram>
+
+<Telegram>
+<Type>REP_BEEP</Type>
+<Sender>F0</Sender>
+<Receiver>5D</Receiver>
+<Para>BEEP_SEL=ACS_BEEP_ACQ,BEEP_FUNC=ACS_BEEP_OFF</Para>
+<Description>handle the audible warning</Description>
+</Telegram>
+
+<Telegram>
+<Type>iAsuStatus</Type>
+<Sender>F3</Sender>
+<Receiver>F0</Receiver>
+<Para>DFRAUFNBEREIT=1,DFRDLBEREIT=1</Para>
+<Description>FLC status for acquisition or fluoro. ASU = Acquisition Sync Unit</Description>
+</Telegram>
+
+<Telegram>
+<Type>iStataBschalt</Type>
+<Sender>50</Sender>
+<Receiver>F0</Receiver>
+<Para>ABSCHALTUNG=MAS_SCHALTER</Para>
+<Description>reason for terminating exposure</Description>
+</Telegram>
+
+<Telegram>
+<Type>iStatusGenAufn</Type>
+<Sender>50</Sender>
+<Receiver>F0</Receiver>
+<Para>HEIZGOK=0,ANODEOK=0,STRABEREIT=0</Para>
+<Description>status of the generator for exposure, Only if all of the three Parameters (filament, rotor and ready for acq) are set to "1" an exposure can be released.
+</Description>
+</Telegram>
+
+<Telegram>
+<Type>iAnlBereit</Type>
+<Sender>F0</Sender>
+<Receiver>F3,5D,E1</Receiver>
+<Para>ANLAUFNBEREIT=1,ANLDLBEREI=1</Para>
+<Description>overall system ready status for fluoro or acquisition</Description>
+</Telegram>
+
+<Telegram>
+<Type>sAuslBed</Type>
+<Sender>E2</Sender>
+<Receiver>F0</Receiver>
+<Para>BEDEINH=ACS_REMOTE_FOOTSWITCH_1,DL=0,VORBEREITUNG=0,HK=0</Para>
+<Description>control xray, switch released</Description>
+</Telegram>
+
+</Telegrams>

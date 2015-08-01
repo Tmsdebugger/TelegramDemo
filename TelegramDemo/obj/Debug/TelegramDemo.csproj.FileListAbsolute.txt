@@ -1,0 +1,14 @@
+D:\PersonalWorkspace\TelegramDemo\TelegramDemo\bin\Debug\TelegramDemo.exe.config
+D:\PersonalWorkspace\TelegramDemo\TelegramDemo\bin\Debug\TelegramDemo.exe
+D:\PersonalWorkspace\TelegramDemo\TelegramDemo\bin\Debug\TelegramDemo.pdb
+D:\PersonalWorkspace\TelegramDemo\TelegramDemo\obj\Debug\MainWindow.baml
+D:\PersonalWorkspace\TelegramDemo\TelegramDemo\obj\Debug\MainWindow.g.cs
+D:\PersonalWorkspace\TelegramDemo\TelegramDemo\obj\Debug\App.g.cs
+D:\PersonalWorkspace\TelegramDemo\TelegramDemo\obj\Debug\TelegramDemo_MarkupCompile.cache
+D:\PersonalWorkspace\TelegramDemo\TelegramDemo\obj\Debug\TelegramDemo.g.resources
+D:\PersonalWorkspace\TelegramDemo\TelegramDemo\obj\Debug\TelegramDemo.Properties.Resources.resources
+D:\PersonalWorkspace\TelegramDemo\TelegramDemo\obj\Debug\TelegramDemo.csproj.GenerateResource.Cache
+D:\PersonalWorkspace\TelegramDemo\TelegramDemo\obj\Debug\TelegramDemo.exe
+D:\PersonalWorkspace\TelegramDemo\TelegramDemo\obj\Debug\TelegramDemo.pdb
+D:\PersonalWorkspace\TelegramDemo\TelegramDemo\obj\Debug\Core\TelegramContent.baml
+D:\PersonalWorkspace\TelegramDemo\TelegramDemo\obj\Debug\Core\TelegramContent.g.cs

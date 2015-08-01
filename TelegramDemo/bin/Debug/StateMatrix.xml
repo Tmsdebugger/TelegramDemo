@@ -1,0 +1,196 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<StateMatrix>
+
+<rule>
+<apid>F0</apid>
+<key>sBedOrg</key>
+<state>Compose telegram: OGP broadcast</state>
+</rule>
+<rule>
+<apid>F0</apid>
+<key>sOrgDaten</key>
+<state>Compose telegram: exposure parameters</state>
+</rule>
+<rule>
+<apid>F0</apid>
+<key>iAsuStatus</key>
+<state>Calculate System Status: by FLC ready status</state>
+</rule>
+<rule>
+<apid>F0</apid>
+<key>iDfrStatus</key>
+<state>Calculate System Status: by FLC ready status</state>
+</rule>
+<rule>
+<apid>F0</apid>
+<key>iStatusGenAufn</key>
+<state>Calculate System Status: by Gen ready status</state>
+</rule>
+<rule>
+<apid>F0</apid>
+<key>sAuslBed</key>
+<state>Compose telegram: receive exposure switch signal, On or Off</state>
+</rule>
+<rule>
+<apid>F0</apid>
+<key>iStrahlgDL</key>
+<state>Compose telegram: receive Gen fluoro on radiation</state>
+</rule>
+<rule>
+<apid>F0</apid>
+<key>iDLPulsedDaten</key>
+<state>Calculate 0-Point technique parameter</state>
+</rule>
+<rule>
+<apid>F0</apid>
+<key>iXRPT</key>
+<state>Calculate exposure time: by pulse time?</state>
+</rule>
+<rule>
+<apid>F0</apid>
+<key>iAufnDaten</key>
+<state>Compose Telegram: last exposure parameter from Gen</state>
+</rule>
+<rule>
+<apid>F0</apid>
+<key>iStrahlgAufn</key>
+<state>Calculate System Status: receive Gen acuqisition on radiation or not</state>
+</rule>
+
+
+<rule>
+<apid>F3</apid>
+<key>iOrganAnz</key>
+<state>Update UI: OGP Selection</state>
+</rule>
+<rule>
+<apid>F3</apid>
+<key>iGenAnz</key>
+<state>Update UI: Gen parameter</state>
+</rule>
+<rule>
+<apid>F3</apid>
+<key>iAnlBereit</key>
+<state>Update System Status: Ready</state>
+</rule>
+<rule>
+<apid>F3</apid>
+<key>sAufnAusl</key>
+<state>Update UI: by Pre-Contact | Main-Contact</state>
+</rule>
+<rule>
+<apid>F3</apid>
+<key>iRoeAnz</key>
+<state>Update UI: Heat Unit</state>
+</rule>
+<rule>
+<apid>F3</apid>
+<key>sDLAusl</key>
+<state>Update UI: fluoro requested</state>
+</rule>
+<rule>
+<apid>F3</apid>
+<key>iXray</key>
+<state>Update UI: fluoro released</state>
+</rule>
+<rule>
+<apid>F3</apid>
+<key>iDLPulsedIstAnz</key>
+<state>Update UI: fluoro technique</state>
+</rule>
+<rule>
+<apid>F3</apid>
+<key>iIonAnz</key>
+<state>Update UI: AEC parameter</state>
+</rule>
+<rule>
+<apid>F3</apid>
+<key>iWaterValAcq</key>
+<state>FLC to do dose regulation?based on water value?</state>
+</rule>
+<rule>
+<apid>F3</apid>
+<key>sIRIS</key>
+<state>Control Iris level</state>
+</rule>
+
+
+<rule>
+<apid>5D</apid>
+<key>iOrganAnz</key>
+<state>Update UI: OGP Selection</state>
+</rule>
+<rule>
+<apid>5D</apid>
+<key>iGenAnz</key>
+<state>Update UI: Gen parameter</state>
+</rule>
+<rule>
+<apid>5D</apid>
+<key>iAnlBereit</key>
+<state>Update System Status: Ready</state>
+</rule>
+<rule>
+<apid>5D</apid>
+<key>sAufnAusl</key>
+<state>Update UI: by Pre-Contact | Main-Contact</state>
+</rule>
+<rule>
+<apid>5D</apid>
+<key>iRoeAnz</key>
+<state>Update UI: Heat Unit</state>
+</rule>
+<rule>
+<apid>5D</apid>
+<key>sDLAusl</key>
+<state>Update UI: fluoro requested, start or end</state>
+</rule>
+<rule>
+<apid>5D</apid>
+<key>iXray</key>
+<state>Update UI: fluoro released</state>
+</rule>
+<rule>
+<apid>5D</apid>
+<key>iDLPulsedIstAnz</key>
+<state>Update UI: fluoro technique</state>
+</rule>
+<rule>
+<apid>5D</apid>
+<key>iIonAnz</key>
+<state>Update UI: AEC parameter</state>
+</rule>
+<rule>
+<apid>5D</apid>
+<key>SH_PREP</key>
+<state>Update UI: radiation preparation start</state>
+</rule>
+<rule>
+<apid>5D</apid>
+<key>REP_BEEP</key>
+<state>start or end BEEP Sound, zing~zing~</state>
+</rule>
+
+<rule>
+<apid>50</apid>
+<key>sDLAusl</key>
+<state>Prepare HW: fluoro requested, start or end</state>
+</rule>
+<rule>
+<apid>50</apid>
+<key>iBsignal</key>
+<state>Dose Regulation?</state>
+</rule>
+<rule>
+<apid>50</apid>
+<key>sIonDaten</key>
+<state>AEC setting by parameter received</state>
+</rule>
+
+<rule>
+<apid>E2</apid>
+<key>SH_PREP</key>
+<state>what SCU do when receive this msg?</state>
+</rule>
+
+</StateMatrix>

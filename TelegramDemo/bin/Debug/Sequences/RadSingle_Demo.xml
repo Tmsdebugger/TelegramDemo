@@ -1,0 +1,282 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Telegrams>
+
+<FunctionUnit>
+<APId>F3</APId>
+<Name>FLC</Name>
+</FunctionUnit>
+
+<FunctionUnit>
+<APId>F0</APId>
+<Name>XCU</Name>
+</FunctionUnit>
+
+<FunctionUnit>
+<APId>5D</APId>
+<Name>TUI_IF</Name>
+</FunctionUnit>
+
+<FunctionUnit>
+<APId>50</APId>
+<Name>GEN_IF</Name>
+</FunctionUnit>
+
+<FunctionUnit>
+<APId>E1</APId>
+<Name>CCU_IF</Name>
+</FunctionUnit>
+
+<!-- OGP and Generator Setup -->
+<Telegram>
+<Type>sBedOrg</Type>
+<Sender>F3</Sender>
+<Receiver>F0</Receiver>
+<Para>BEDEINH=DFR_BEDIENUNG,exposure release device is DFR(Imaging System) control console?
+KTSCODEORG=451, 451 mean ORGAN</Para>
+<Description>organ program selction from control console.</Description>
+<SequenceStepCategory>OGP Selection</SequenceStepCategory>
+</Telegram>
+
+<Telegram>
+<Type>iOrganAnz</Type>
+<Sender>F0</Sender>
+<Receiver>F3,5D</Receiver>
+<Para>RegionNumber=20,OrganNumber=2</Para>
+<Description>display of organ and reagion number, sync UI</Description>
+<SequenceStepCategory>OGP Selection</SequenceStepCategory>
+</Telegram>
+
+<Telegram>
+<Type>sOrgDaten</Type>
+<Sender>F3</Sender>
+<Receiver>F0</Receiver>
+<Para>System=Wall_FD, acquisition from Wall Stand
+Technik=_2_PUNKT_TECHNIK,
+kV=48,mAs=2.5,
+FOKUS=KLEINER_FOKUS, small focus</Para>
+<Description>ogp parameters</Description>
+<SequenceStepCategory>Gen Para Setting</SequenceStepCategory>
+</Telegram>
+
+<Telegram>
+<Type>iGenAnz</Type>
+<Sender>F0</Sender>
+<Receiver>F3,5D</Receiver>
+<Para>Technik=_2_PUNKT_TECHNIK,kV=48,mAs=250,FOKUS=KLEINER_FOKUS</Para>
+<Description>generator data display on UIs</Description>
+<SequenceStepCategory>Gen Para Setting</SequenceStepCategory>
+</Telegram>
+
+<Telegram>
+<Type>iAnlBereit</Type>
+<Sender>F0</Sender>
+<Receiver>F3,5D</Receiver>
+<Para>ANLAUFNBEREIT=1, status of Acquisition condition of system
+ANLDLBEREI=0, status of Fluoro condition of system</Para>
+<Description>overall system ready status for fluoro or acquisition</Description>
+<SequenceStepCategory>Exposure : Prep</SequenceStepCategory>
+</Telegram>
+
+<!-- OGP and Generator Setup -->
+
+<Telegram>
+<Type>sAufnAusl</Type>
+<Sender>F0</Sender>
+<Receiver>F3,5D,50,E1</Receiver>
+<Para>VORBEREITUNG=1, pre-contact
+HAUPTKONTAKT=0, main contact
+STRAHLGBEREIT=1, tell other subsystem that generator is ready for x-ray. e.g. Tomo stand
+ACQ_INDEX=483, the acquisition index of current system</Para>
+<Description>control of X-ray for acquisition, Pre-Contact</Description>
+<SequenceStepCategory>Exposure : Prep</SequenceStepCategory>
+</Telegram>
+
+<Telegram>
+<Type>iAsuStatus</Type>
+<Sender>F3</Sender>
+<Receiver>F0</Receiver>
+<Para>DFRAUFNBEREIT=1, FLC ready for acquisition or the reason why it is not ready for acquisition
+DFRDLBEREIT=0, FLC ready for fluoro or the reason why it is not ready</Para>
+<Description>FLC status for acquisition or fluoro. ASU = Acquisition Sync Unit; 
+iASUStatus is dynamic status that may be changed while X-ray or X-ray preparation is running to sync
+iDFRStatus is static - no Xray prep if iDFRStatus is not true</Description>
+<SequenceStepCategory>Exposure : Prep</SequenceStepCategory>
+</Telegram>
+
+<Telegram>
+<Type>sAufnAusl</Type>
+<Sender>F0</Sender>
+<Receiver>F3,5D,50,E1</Receiver>
+<Para>VORBEREITUNG=1,HAUPTKONTAKT=1,STRAHLGBEREIT=1,ACQ_INDEX=483</Para>
+<Description>control of X-ray for acquisition, Main Contact</Description>
+<SequenceStepCategory>Exposure : Release</SequenceStepCategory>
+</Telegram>
+
+<Telegram>
+<Type>iXray</Type>
+<Sender>F0</Sender>
+<Receiver>F3,5D,50,E1</Receiver>
+<Para>XRAY=2, release of Xray</Para>
+<Description>X-ray display control, 
+Xray=2, means Acqusition, 
+Xray=1, means Fluoro,
+Xray=0 means No Xray</Description>
+<SequenceStepCategory>Exposure : Release</SequenceStepCategory>
+</Telegram>
+
+
+<Telegram>
+<Type>iRoeAnz</Type>
+<Sender>F0</Sender>
+<Receiver>F3,5D</Receiver>
+<Para>TUBELD=0%</Para>
+<Description>heat status of the current selected tube in the system</Description>
+<SequenceStepCategory>Exposure : End</SequenceStepCategory>
+</Telegram>
+
+
+<Telegram>
+<Type>iDfrStatus</Type>
+<Sender>F3</Sender>
+<Receiver>F0</Receiver>
+<Para>DFRAUFNBEREIT=0, FLC ready for acquisition or the reason why it is not ready for acquisition
+DFRDLBEREIT=0, FLC ready for fluoro or the reason why it is not ready</Para>
+<Description>FLC status, ready for exposure or fluoro? Not Ready here.</Description>
+<SequenceStepCategory>Exposure : End</SequenceStepCategory>
+</Telegram>
+
+<Telegram>
+<Type>iAnlBereit</Type>
+<Sender>F0</Sender>
+<Receiver>F3,5D,E1</Receiver>
+<Para>ANLAUFNBEREIT=DFR_STATUS_NOT_READY,
+ANLDLBEREI=0</Para>
+<Description>overall system ready status for fluoro or acquisition</Description>
+<SequenceStepCategory>Exposure : End</SequenceStepCategory>
+</Telegram>
+
+<Telegram>
+<Type>iXray</Type>
+<Sender>F0</Sender>
+<Receiver>F3,5D,50,E1</Receiver>
+<Para>XRAY=0</Para>
+<Description>X-ray display control, 2 means Acqusition, 1 means Fluoro, 0 means No Xray</Description>
+<SequenceStepCategory>Exposure : End</SequenceStepCategory>
+</Telegram>
+
+<Telegram>
+<Type>iNachAnz</Type>
+<Sender>F0</Sender>
+<Receiver>F3,5D</Receiver>
+<Para>MASIST=2.57,
+KVIST=47.9</Para>
+<Description>display of X-ray parameters of the last exposure being taken. Maybe for DICOM image header</Description>
+<SequenceStepCategory>Exposure : End</SequenceStepCategory>
+</Telegram>
+
+<Telegram>
+<Type>iStataBschalt</Type>
+<Sender>50</Sender>
+<Receiver>F0</Receiver>
+<Para>ABSCHALTUNG=MAS_SCHALTER</Para>
+<Description>reason for terminating exposure</Description>
+<SequenceStepCategory>Exposure : End</SequenceStepCategory>
+</Telegram>
+
+
+<Telegram>
+<Type>iStatusGenAufn</Type>
+<Sender>50</Sender>
+<Receiver>F0</Receiver>
+<Para>HEIZGOK=0,
+ANODEOK=0,
+STRABEREIT=0</Para>
+<Description>status of the generator for exposure, Only if all of the three Parameters (filament, rotor and ready for acq) are set to "1" an exposure can be released.
+</Description>
+<SequenceStepCategory>Exposure : End</SequenceStepCategory>
+</Telegram>
+
+<Telegram>
+<Type>sAufnAusl</Type>
+<Sender>F0</Sender>
+<Receiver>F3,5D,50,E1</Receiver>
+<Para>VORBEREITUNG=0,
+HAUPTKONTAKT=0,
+STRAHLGBEREIT=0,
+ACQ_INDEX=483</Para>
+<Description>control of X-ray for acquisition. 
+No action here.</Description>
+<SequenceStepCategory>System Recovery</SequenceStepCategory>
+</Telegram>
+
+<Telegram>
+<Type>iDfrStatus</Type>
+<Sender>F3</Sender>
+<Receiver>F0</Receiver>
+<Para>DFRAUFNBEREIT=FD_RECOVERING,
+DFRDLBEREIT=FD_RECOVERING</Para>
+<Description>FLC status, ready for exposure or fluoro?</Description>
+<SequenceStepCategory>System Recovery</SequenceStepCategory>
+</Telegram>
+
+<Telegram>
+<Type>iAsuStatus</Type>
+<Sender>F3</Sender>
+<Receiver>F0</Receiver>
+<Para>DFRAUFNBEREIT=0,
+DFRDLBEREIT=0</Para>
+<Description>FLC status for acquisition or fluoro. ASU = Acquisition Sync Unit</Description>
+<SequenceStepCategory>System Recovery</SequenceStepCategory>
+</Telegram>
+
+<Telegram>
+<Type>iAnlBereit</Type>
+<Sender>F0</Sender>
+<Receiver>F3,5D,E1</Receiver>
+<Para>ANLAUFNBEREIT=DETEKTOR_STATUS_NOT_READY,
+ANLDLBEREI=0</Para>
+<Description>overall system ready status for fluoro or acquisition</Description>
+<SequenceStepCategory>System Recovery</SequenceStepCategory>
+</Telegram>
+
+<Telegram>
+<Type>iAsuStatus</Type>
+<Sender>F3</Sender>
+<Receiver>F0</Receiver>
+<Para>DFRAUFNBEREIT=1,
+DFRDLBEREIT=0</Para>
+<Description>FLC status for acquisition or fluoro. ASU = Acquisition Sync Unit</Description>
+<SequenceStepCategory>System Recovery</SequenceStepCategory>
+</Telegram>
+
+<Telegram>
+<Type>iAnlBereit</Type>
+<Sender>F0</Sender>
+<Receiver>F3,5D,E1</Receiver>
+<Para>ANLAUFNBEREIT=DETEKTOR_STATUS_NOT_READY,
+ANLDLBEREI=0</Para>
+<Description>overall system ready status for fluoro or acquisition</Description>
+<SequenceStepCategory>System Recovery</SequenceStepCategory>
+</Telegram>
+
+<Telegram>
+<Type>iDfrStatus</Type>
+<Sender>F3</Sender>
+<Receiver>F0</Receiver>
+<Para>DFRAUFNBEREIT=1,
+DFRDLBEREIT=1</Para>
+<Description>FLC status, ready for exposure or fluoro?</Description>
+<SequenceStepCategory>System Recovery</SequenceStepCategory>
+</Telegram>
+
+<Telegram>
+<Type>iAnlBereit</Type>
+<Sender>F0</Sender>
+<Receiver>F3,5D,E1</Receiver>
+<Para>ANLAUFNBEREIT=1,
+ANLDLBEREI=1</Para>
+<Description>overall system ready status for fluoro or acquisition</Description>
+<SequenceStepCategory>System Recovery</SequenceStepCategory>
+</Telegram>
+
+</Telegrams>
