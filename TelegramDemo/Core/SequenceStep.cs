@@ -8,7 +8,7 @@ using System.Windows.Controls;
 using System.Windows.Media;
 using TelegramDemo.Common;
 
-namespace TelegramDemo.Core
+namespace TelegramDemo.Common
 {
     public class SequenceStep
     {

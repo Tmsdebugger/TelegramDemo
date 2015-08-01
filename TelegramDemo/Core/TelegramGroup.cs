@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace TelegramDemo.Core
+namespace TelegramDemo.Common
 {
     public class TelegramGroup
     {
@@ -54,12 +54,6 @@ namespace TelegramDemo.Core
                 stackT.Push(stackBack.Pop());
             }
                 
-
-            if (stackBack.Count > 0)
-            {
-                stackT.Push(stackBack.Pop());
-            }
-
         }
 
         public bool NoMoreTelegrams

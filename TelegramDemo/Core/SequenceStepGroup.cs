@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using TelegramDemo.Common;
 
-namespace TelegramDemo.Core
+namespace TelegramDemo.Common
 {
     public class SequenceStepGroup
     {

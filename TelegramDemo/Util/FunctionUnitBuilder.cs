@@ -4,7 +4,7 @@ using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using TelegramDemo.Core;
+using TelegramDemo.Common;
 
 namespace TelegramDemo.Util
 {
@@ -13,7 +13,7 @@ namespace TelegramDemo.Util
         public static Dictionary<string, FunctionUnit> CreateFunctionUnits(string sequenceFile)
         {
             DataSet dsSequence = new DataSet();
-            dsSequence.ReadXml(string.Format(@".\Sequences\{0}.xml", sequenceFile));
+            dsSequence.ReadXml(sequenceFile);
 
             DataSet dsStateMatrix = new DataSet();            
             dsStateMatrix.ReadXml("StateMatrix.xml");

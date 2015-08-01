@@ -28,7 +28,7 @@
             <ComboBox x:Name="cmbSequences" Canvas.Left="13" Canvas.Top="10" Width="134" Height="34" FontSize="14"/>
         </Canvas>
         <Rectangle Fill="#FF5B85C1" Height="437" RadiusY="10" RadiusX="10" Stroke="#FF5B85C1" Width="159" Canvas.Left="859" StrokeThickness="0"/>
-        <Button Content="X" Height="16" Canvas.Left="1212" Canvas.Top="-12" Width="17" BorderBrush="{x:Null}" Foreground="#FF080707" Click="Button_Click" Background="#FF266B93" FontSize="8"/>
+        <Button x:Name="btnClose" Content="X" Height="16" Canvas.Left="1212" Canvas.Top="-12" Width="17" BorderBrush="{x:Null}" Foreground="#FF080707" Click="btnClose_Click" Background="#FF266B93" FontSize="8"/>
         <Slider Canvas.Left="1087" Canvas.Top="212" Width="116" Minimum="1" LargeChange="2" ValueChanged="Slider_ValueChanged" SmallChange="1" TickFrequency="2.5"/>
         <TextBox Height="24" Canvas.Left="1084" TextWrapping="Wrap" Text="Animation Speed:" Canvas.Top="187" Width="137" Background="{x:Null}" BorderBrush="{x:Null}" IsReadOnly="True"/>
 

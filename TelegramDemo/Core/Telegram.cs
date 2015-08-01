@@ -12,7 +12,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using TelegramDemo.Common;
 
-namespace TelegramDemo.Core
+namespace TelegramDemo.Common
 {
     public class Telegram
     {
@@ -86,7 +86,7 @@ namespace TelegramDemo.Core
 
         void l1_MouseDoubleClick(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
-            TelegramContent tc = new TelegramContent();
+            TelegramContentWindow tc = new TelegramContentWindow();
             tc.BindingDataSource(dsContent);
             tc.ShowDialog();
         }

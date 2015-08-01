@@ -8,7 +8,7 @@ using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Shapes;
 
-namespace TelegramDemo.Core
+namespace TelegramDemo.Common
 {
     public class FunctionUnit
     {
@@ -64,7 +64,7 @@ namespace TelegramDemo.Core
         public Dictionary<string, string> StateMatrix
         { set { stateMatrix = value; } }
 
-        public void UpdateReceiverFUState(string telegramName, string para)
+        public void UpdateReceiverFUState(string telegramName)
         {
             lblFU.Background = Brushes.Yellow;
 

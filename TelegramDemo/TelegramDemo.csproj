@@ -60,14 +60,14 @@
     <Compile Include="Core\SequenceStep.cs" />
     <Compile Include="Core\SequenceStepGroup.cs" />
     <Compile Include="Core\Telegram.cs" />
-    <Compile Include="Core\TelegramContent.xaml.cs">
+    <Compile Include="Common\TelegramContent.xaml.cs">
       <DependentUpon>TelegramContent.xaml</DependentUpon>
     </Compile>
     <Compile Include="Core\TelegramGroup.cs" />
     <Compile Include="Util\FunctionUnitBuilder.cs" />
-    <Compile Include="Util\SequenceStepBuilder.cs" />
+    <Compile Include="Util\SequenceStepGroupBuilder.cs" />
     <Compile Include="Util\TelegramGroupBuilder.cs" />
-    <Page Include="Core\TelegramContent.xaml">
+    <Page Include="Common\TelegramContent.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -114,9 +114,7 @@
   <ItemGroup>
     <None Include="Resources\Telegram.bmp" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Schema\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

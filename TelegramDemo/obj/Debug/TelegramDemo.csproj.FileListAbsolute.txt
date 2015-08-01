@@ -10,5 +10,5 @@ D:\PersonalWorkspace\TelegramDemo\TelegramDemo\obj\Debug\TelegramDemo.Properties
 D:\PersonalWorkspace\TelegramDemo\TelegramDemo\obj\Debug\TelegramDemo.csproj.GenerateResource.Cache
 D:\PersonalWorkspace\TelegramDemo\TelegramDemo\obj\Debug\TelegramDemo.exe
 D:\PersonalWorkspace\TelegramDemo\TelegramDemo\obj\Debug\TelegramDemo.pdb
-D:\PersonalWorkspace\TelegramDemo\TelegramDemo\obj\Debug\Core\TelegramContent.baml
-D:\PersonalWorkspace\TelegramDemo\TelegramDemo\obj\Debug\Core\TelegramContent.g.cs
+D:\PersonalWorkspace\TelegramDemo\TelegramDemo\obj\Debug\Common\TelegramContent.baml
+D:\PersonalWorkspace\TelegramDemo\TelegramDemo\obj\Debug\Common\TelegramContent.g.cs

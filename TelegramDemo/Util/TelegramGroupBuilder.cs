@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Xml;
 using TelegramDemo.Common;
-using TelegramDemo.Core;
+using TelegramDemo.Common;
 
 namespace TelegramDemo.Util
 {
@@ -17,7 +17,7 @@ namespace TelegramDemo.Util
             TelegramGroup tg = new TelegramGroup();
 
             DataSet ds = new DataSet();
-            ds.ReadXml(string.Format(@".\Sequences\{0}.xml", sequenceFile));
+            ds.ReadXml(sequenceFile);
 
             foreach(DataRow row in ds.Tables["Telegram"].Rows)
             {

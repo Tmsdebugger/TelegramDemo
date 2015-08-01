@@ -14,7 +14,7 @@ using System.Windows.Media.Animation;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-using TelegramDemo.Core;
+using TelegramDemo.Common;
 using TelegramDemo.Common;
 using TelegramDemo.Util;
 using System.Data;
@@ -31,52 +31,49 @@ namespace TelegramDemo
         public MainWindow()
         {
             InitializeComponent();
+
+            InitializeSeuqenceComboList();
+
+            InitializeSequenceStepTitle();
         }
 
         #endregion
 
         #region Fields
-        
-        const int DISTANCE_BETWEEN_FU_UI_DEFAULT = 150;
-        const int FU_TOP_UI = 10;
-        const int DISTANCE_BETWEEN_FU_AND_BOTTOM_LINE = 150;
-        const int DISTATNC_FU_STATE_OFFSET = 10;
+
+        const int DISTANCE_FU_BETWEEN = 150;
+        const int DISTANCE_FU_AND_BOTTOM_LINE_BETWEEN = 150;
+        const int DISTANCE_FU_STATE_TEXT_OFFSET = 10;
+        const int WIDTH_FU_GROUP_CANVAS = 838;
+        const int TOP_OFFSET = 10;
+
         const int SEQUENCE_STEP_X = 5;
-        const int MULTI_TELEGRAMS_ANIMATION_SPEED_FACTOR = 2;
         const int SEQUENCE_STEP_Y_OFFSET = 50;
-        const int FU_GROUP_CANVAS_WIDTH = 838;
 
-        private int distanceBetweenFU = DISTANCE_BETWEEN_FU_UI_DEFAULT;
+        const int MULTI_TELEGRAMS_ANIMATION_SPEED_FACTOR = 2;
+        const double DEFAULT_ANIMATION_SPEED = 0.2;
 
-        private double AnimationSpeed = 0.2;
+        const double HEIGHT_SEQUENCE_STEP_GROUP_CANVAS = 446;
+
+        //TODO:
+        //private int distanceBetweenFU = DISTANCE_FU_BETWEEN;
+        private double AnimationSpeed = DEFAULT_ANIMATION_SPEED;
 
         private Label seqStepTitle = new Label();
 
-        SequenceStep step;
+        private Dictionary<string, FunctionUnit> fuDic;
+        private TelegramGroup tg;
+        private SequenceStepGroup ssg;
+
+        private Dictionary<string, LineGeometry> arcnetDic = new Dictionary<string, LineGeometry>();
+
+        //TODO:
         private int sequenceStepCounter = 1;
-
-        Dictionary<string, FunctionUnit> fuDic;
-        Dictionary<string, LineGeometry> arcnetDic = new Dictionary<string, LineGeometry>();
-        TelegramGroup tg;
-        SequenceStepGroup ssg;
-
-        List<Telegram> dequeuedTelegrams = new List<Telegram>();
-
-        private const double OriginalSeqStepCanvasHeight = 446;
+        private List<Telegram> dequeuedTelegrams = new List<Telegram>();
 
         #endregion
 
         #region Events
-
-        protected override void OnInitialized(EventArgs e)
-        {
-            base.OnInitialized(e);
-
-            InitializeSeuqenceList();
-
-            InitializeSequenceStepTitle();
-
-        }
 
         private void btnLoadSequence_Click(object sender, RoutedEventArgs e)
         {
@@ -86,25 +83,17 @@ namespace TelegramDemo
                 return;
             }
 
-            CleanupCanvas(c1);
-            CleanupCanvas(c3);
+            string sequenceFileFullName = string.Format(@".\Sequences\{0}.xml", cmbSequences.SelectedValue.ToString());
+            RefreshSequenceStepGroup(sequenceFileFullName);
+            RefreshFunctionUnitAndTelegramGroup(sequenceFileFullName);
 
-            ResetTelegramContent();
+            ResetUIForSequenceLoad();
 
-            string sequenceFileName = cmbSequences.SelectedValue.ToString();
-
-            fuDic = FunctionUnitBuilder.CreateFunctionUnits(sequenceFileName);
-            tg = TelegramGroupBuilder.CreateTelegramGroup(sequenceFileName, fuDic);
-            ssg = SequenceStepBuilder.CreateSequenceStepGroup(sequenceFileName);
-
-            arcnetDic.Clear();
-            distanceBetweenFU = FU_GROUP_CANVAS_WIDTH / fuDic.Keys.Count;
+            LoadAllSequenceStepsOnUI();
 
             DrawFUandArcnetLine();
 
             DrawArcnetMainLine();
-
-            LoadSequenceSteps();
         }
 
         private void btnStart_Click(object sender, RoutedEventArgs e)
@@ -113,7 +102,6 @@ namespace TelegramDemo
             {
                 MessageBox.Show("No Sequence Loaded");
                 return;
-
             }
 
             if (tg.NoMoreTelegrams)
@@ -122,28 +110,64 @@ namespace TelegramDemo
                 return;
             }
 
-            ResetFUTelegrams();
-    
+            ResetAllFUState();
+
+            ClearAllSentOutTelegramsOnUI();
+
             dequeuedTelegrams = tg.PopTelegrams();
 
-            if (dequeuedTelegrams.Count > 0)
-            {
-                dequeuedTelegrams[0].SenderFU.UpdateSenderFUState();
-
-                ssg.SetSequnceStepState(dequeuedTelegrams[0].SequenceStepCategory, StepState.Started);
-            }
+            //TODO:
+            ssg.SetSequnceStepState(dequeuedTelegrams[0].SequenceStepCategory, StepState.Started);
 
             ProcessMultiTelegrams(dequeuedTelegrams);
 
-            foreach (Telegram t in dequeuedTelegrams)
-            {
-                t.ReceiverFU.UpdateReceiverFUState(t.TelegramName, t.Paras);
-                ShowTelegramContent(t.ContentDS);
-            }
+            UpdateFUStateAfterTelegramSentOut(dequeuedTelegrams);
+
+            ShowTelegramDetail(dequeuedTelegrams[0].ContentDS);
 
         }
 
-        private void Button_Click(object sender, RoutedEventArgs e)
+        private void btnPrevious_Click(object sender, RoutedEventArgs e)
+        {
+            if (tg == null)
+            {
+                MessageBox.Show("No Sequence loaded yet");
+                return;
+            }
+
+            tg.BackToPreviousTelegram();
+
+            //reset ui
+            HideTelegramContent();
+            ResetAllFUState();
+            ClearAllSentOutTelegramsOnUI();
+
+            RollBackSequenceSteps();
+        }
+
+        private void step_StepSelected(object sender, string e)
+        {
+            string stepName = e;
+
+            btnLoadSequence_Click(this, null);
+
+            List<Telegram> ts = tg.PopTelegrams();
+            while (!tg.NoMoreTelegrams && ts[0].SequenceStepCategory != stepName)
+            {
+                ts = tg.PopTelegrams();
+                ssg.SetSequnceStepState(ts[0].SequenceStepCategory, StepState.Started);
+            }
+
+            //we need to roll back to previous telegrams, since we pop out the first telegram that matching the sequence step name
+            tg.BackToPreviousTelegram();
+        }
+
+        private void Slider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
+        {
+            AnimationSpeed = Math.Round(DEFAULT_ANIMATION_SPEED * (int)e.NewValue, 1);
+        }
+
+        private void btnClose_Click(object sender, RoutedEventArgs e)
         {
             this.Close();
         }
@@ -156,48 +180,68 @@ namespace TelegramDemo
             }
         }
 
-        private void Slider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
-        {
-            AnimationSpeed = Math.Round(0.2 * (int)e.NewValue, 1);
-        }
+        #endregion
 
-        private void btnPrevious_Click(object sender, RoutedEventArgs e)
+        #region Function Unit, Sequence Step Group, Telegram Group related logic
+
+        private void RollBackSequenceSteps()
         {
-            if(tg == null)
+            //First: reset all to Not Started
+            foreach (SequenceStep ss in ssg.GetSequenceSteps())
             {
-                MessageBox.Show("No Sequence loaded yet");
-                return;
+                ss.SetState(StepState.NotStarted);
             }
 
-            tg.BackToPreviousTelegram();
-
-            //reset ui
-            ResetTelegramContent();
-            ResetFUTelegrams();
-
-            //reset Sequence Steps.
-            ResetSequenceStepsForRollBackTelegrams();
+            //Second: update state based on sent out telegrams
+            foreach (List<Telegram> tgs in tg.GetSentOutTelegrams())
+            {
+                ssg.SetSequnceStepState(tgs[0].SequenceStepCategory, StepState.Started);
+            }
         }
 
-        private void step_StepSelected(object sender, string e)
+        private void ResetAllFUState()
         {
-            string stepName = e;
-
-            btnLoadSequence_Click(this, null);
-
-            List<Telegram> tgs = tg.PopTelegrams();
-            while(!tg.NoMoreTelegrams && tgs[0].SequenceStepCategory != stepName)
+            foreach (FunctionUnit fu in fuDic.Values)
             {
-                tgs = tg.PopTelegrams();
-                ssg.SetSequnceStepState(tgs[0].SequenceStepCategory, StepState.Started);
+                fu.ResetFUState();
+            }
+        }
+
+        private void RefreshSequenceStepGroup(string sequenceFileFullName)
+        {
+            sequenceStepCounter = 1;
+
+            if (ssg != null)
+            {
+                foreach (SequenceStep ss in ssg.GetSequenceSteps())
+                {
+                    ss.StepSelected -= step_StepSelected;
+                }
+            }
+
+            ssg = SequenceStepGroupBuilder.CreateSequenceStepGroup(sequenceFileFullName);
+        }
+
+        private void RefreshFunctionUnitAndTelegramGroup(string sequenceFileFullName)
+        {
+            fuDic = FunctionUnitBuilder.CreateFunctionUnits(sequenceFileFullName);
+            tg = TelegramGroupBuilder.CreateTelegramGroup(sequenceFileFullName, fuDic);
+        }
+
+        private void UpdateFUStateAfterTelegramSentOut(List<Telegram> sentOutTelegrams)
+        {
+            foreach (Telegram t in sentOutTelegrams)
+            {
+                t.SenderFU.UpdateSenderFUState();
+                t.ReceiverFU.UpdateReceiverFUState(t.TelegramName);
             }
         }
 
         #endregion
 
-        #region Initialization Method
+        #region UI Initialization
 
-        private void InitializeSeuqenceList()
+        private void InitializeSeuqenceComboList()
         {
             string[] sequenceFiles = System.IO.Directory.GetFiles(@".\Sequences\", "*.xml");
 
@@ -219,13 +263,11 @@ namespace TelegramDemo
 
             this.c3.Children.Add(seqStepTitle);
             Canvas.SetLeft(seqStepTitle, SEQUENCE_STEP_X);
-            Canvas.SetTop(seqStepTitle, 10);
+            Canvas.SetTop(seqStepTitle, TOP_OFFSET);
         }
 
-        private void LoadSequenceSteps()
+        private void LoadAllSequenceStepsOnUI()
         {
-            ResetSequenceStepsForSequenceReload();
-
             SequenceStep step = null;
 
             while (!ssg.NoMoreSteps)
@@ -244,84 +286,97 @@ namespace TelegramDemo
 
         }
 
-        private void ResetSequenceStepsForRollBackTelegrams()
-        {
-            foreach(SequenceStep ss in ssg.GetSequenceSteps())
-            {
-                ss.SetState(StepState.NotStarted);
-            }
+        #endregion
 
-            foreach(List<Telegram> tgs in tg.GetSentOutTelegrams())
+        #region UI Reset
+
+        private void ClearCanvas(Canvas c)
+        {
+            List<UIElement> tobeCleared = new List<UIElement>();
+            foreach (UIElement uie in c.Children)
             {
-                ssg.SetSequnceStepState(tgs[0].SequenceStepCategory, StepState.Started);
+                if (uie is Label || uie is Path || uie is TextBlock)
+                    tobeCleared.Add(uie);
+            }
+            foreach (UIElement uie in tobeCleared)
+            {
+                c.Children.Remove(uie);
             }
         }
 
-        private void ResetSequenceStepsForSequenceReload()
+        private void ResetUIForSequenceLoad()
         {
-            this.c3.Height = OriginalSeqStepCanvasHeight;
+            //cleanup all FU and telegram related UI
+            ClearCanvas(c1);
 
+            //cleanup all sequence step related UI
+            ClearCanvas(c3);
+
+            //cleanup grid showing current telegram content in detail
+            HideTelegramContent();
+
+            ResetSequenceStepCanvas();
+        }
+
+        private void ResetSequenceStepCanvas()
+        {
+            this.c3.Height = HEIGHT_SEQUENCE_STEP_GROUP_CANVAS;
             this.c3.Children.Add(seqStepTitle);
             Canvas.SetLeft(seqStepTitle, SEQUENCE_STEP_X);
-            Canvas.SetTop(seqStepTitle, 10);
-
-            sequenceStepCounter = 1;
-
-            if (ssg != null)
-            {
-                foreach (SequenceStep ss in ssg.GetSequenceSteps())
-                {
-                    ss.StepSelected -= step_StepSelected;
-                }
-            }
+            Canvas.SetTop(seqStepTitle, TOP_OFFSET);
         }
 
-        private void ResetFUTelegrams() 
+        private void ClearAllSentOutTelegramsOnUI()
         {
-            foreach (FunctionUnit fu in fuDic.Values)
+            foreach (Telegram t in dequeuedTelegrams)
             {
-                fu.ResetFUState();
-            }
-
-            if (dequeuedTelegrams.Count > 0)
-            {
-                foreach (Telegram t in dequeuedTelegrams)
-                {
-                    this.c1.Children.Remove(t.Shape);
-                }
+                this.c1.Children.Remove(t.Shape);
             }
         }
 
         #endregion
 
-        #region UI Drawing and Setting
+        #region UI Telegram Content Detail
 
-        private void CleanupCanvas(Canvas c1)
+        private void ShowTelegramDetail(DataSet dsContent)
         {
-            List<UIElement> tobeCleared = new List<UIElement>();
-            foreach(UIElement uie in c1.Children)
-            {
-                if (uie is Label || uie is Path || uie is TextBlock)
-                    tobeCleared.Add(uie);
-            }
-            foreach(UIElement uie in tobeCleared)
-            {
-                c1.Children.Remove(uie);
-            }
+            dgTelegramContent.Visibility = System.Windows.Visibility.Visible;
+
+            dgTelegramContent.ItemsSource = dsContent.Tables[0].DefaultView;
+            dgTelegramContent.Columns[1].Width = 500;
+
+            DataGridTextColumn colValue = (DataGridTextColumn)dgTelegramContent.Columns[1];
+
+            Style customStyle = new Style(typeof(TextBlock));
+            Setter colSetter = new Setter(TextBlock.TextWrappingProperty, TextWrapping.Wrap);
+            customStyle.Setters.Add(colSetter);
+            colValue.ElementStyle = customStyle;
         }
+
+        private void HideTelegramContent()
+        {
+            dgTelegramContent.Visibility = System.Windows.Visibility.Hidden;
+        }
+
+        #endregion
+
+        #region UI Drawing FU and Lines
 
         private void DrawFUandArcnetLine()
         {
+            arcnetDic.Clear();
+
+            int distanceBetweenFU = WIDTH_FU_GROUP_CANVAS / fuDic.Keys.Count;
             int fuLocationStep = 0;
 
             foreach (FunctionUnit fu in fuDic.Values)
             {
                 this.c1.Children.Add(fu.FULabel);
                 this.c1.Children.Add(fu.StateText);
-                Canvas.SetLeft(fu.FULabel, fuLocationStep * distanceBetweenFU + DISTATNC_FU_STATE_OFFSET);
-                Canvas.SetTop(fu.FULabel, FU_TOP_UI);
-                Canvas.SetLeft(fu.StateText, fuLocationStep * distanceBetweenFU + DISTATNC_FU_STATE_OFFSET + fu.FULabel.Width);
-                Canvas.SetTop(fu.StateText, FU_TOP_UI);
+                Canvas.SetLeft(fu.FULabel, fuLocationStep * distanceBetweenFU + DISTANCE_FU_STATE_TEXT_OFFSET);
+                Canvas.SetTop(fu.FULabel, TOP_OFFSET);
+                Canvas.SetLeft(fu.StateText, fuLocationStep * distanceBetweenFU + DISTANCE_FU_STATE_TEXT_OFFSET + fu.FULabel.Width);
+                Canvas.SetTop(fu.StateText, TOP_OFFSET);
                 fuLocationStep++;
 
                 Path p = new Path();
@@ -335,7 +390,7 @@ namespace TelegramDemo
                 double left = tempLeft + fu.FULabel.Width / 2;
                 double top = tempTop + fu.FULabel.Height;
                 arcnetLine.StartPoint = new Point(left, top);
-                arcnetLine.EndPoint = new Point(left, top + DISTANCE_BETWEEN_FU_AND_BOTTOM_LINE);
+                arcnetLine.EndPoint = new Point(left, top + DISTANCE_FU_AND_BOTTOM_LINE_BETWEEN);
                 p.Data = arcnetLine;
                 arcnetDic.Add(fu.APId, arcnetLine);
                 this.c1.Children.Add(p);
@@ -356,31 +411,7 @@ namespace TelegramDemo
 
         #endregion
 
-        #region Telegram Content Detail Show
-
-        private void ShowTelegramContent(DataSet dsContent)
-        {
-            dgTelegramContent.Visibility = System.Windows.Visibility.Visible;
-
-            dgTelegramContent.ItemsSource = dsContent.Tables[0].DefaultView;
-            dgTelegramContent.Columns[1].Width = 500;
-
-            DataGridTextColumn colValue = (DataGridTextColumn)dgTelegramContent.Columns[1];
-
-            Style customStyle = new Style(typeof(TextBlock));
-            Setter colSetter = new Setter(TextBlock.TextWrappingProperty, TextWrapping.Wrap);
-            customStyle.Setters.Add(colSetter);
-            colValue.ElementStyle = customStyle;
-        }
-
-        private void ResetTelegramContent()
-        {
-            dgTelegramContent.Visibility = System.Windows.Visibility.Hidden;
-        }
-
-        #endregion
-
-        #region Telegram Operation on UI
+        #region UI Telegram Animation
 
         private void ProcessMultiTelegrams(List<Telegram> tList)
         {
