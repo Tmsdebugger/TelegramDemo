@@ -72,27 +72,6 @@ namespace TelegramDemo
         {
             base.OnInitialized(e);
 
-            #region obsolete Animation code     
-
-            //Canvas.SetLeft(t1.Shape, 10);
-
-            //NameScope.SetNameScope(this, new NameScope());
-            //this.RegisterName(t1.Shape.Name, t1.Shape);
-
-            //DoubleAnimation ani1 = new DoubleAnimation();
-            //ani1.From = 0;
-            //ani1.To = 25;
-            //ani1.Duration = new Duration(TimeSpan.FromMilliseconds(1000));
-            //Storyboard.SetTargetName(ani1, t1.Shape.Name);
-            //Storyboard.SetTargetProperty(ani1, new PropertyPath(Rectangle.WidthProperty));
-
-            //Storyboard sb = new Storyboard();
-            //sb.Children.Add(ani1);
-
-            //sb.Begin(this);
-
-            #endregion
-
             InitializeSeuqenceList();
 
             InitializeSequenceStepTitle();
