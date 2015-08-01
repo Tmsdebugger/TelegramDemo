@@ -18,6 +18,7 @@ using TelegramDemo.Common;
 using TelegramDemo.Common;
 using TelegramDemo.Util;
 using System.Data;
+using TelegramDemo.Core;
 
 namespace TelegramDemo
 {
@@ -61,9 +62,9 @@ namespace TelegramDemo
 
         private Label seqStepTitle = new Label();
 
-        private Dictionary<string, FunctionUnit> fuDic;
         private TelegramGroup tg;
         private SequenceStepGroup ssg;
+        private FunctionUnitGroup fug;
 
         private Dictionary<string, LineGeometry> arcnetDic = new Dictionary<string, LineGeometry>();
 
@@ -110,7 +111,7 @@ namespace TelegramDemo
                 return;
             }
 
-            ResetAllFUState();
+            fug.ResetAllFUState();
 
             ClearAllSentOutTelegramsOnUI();
 
@@ -136,10 +137,10 @@ namespace TelegramDemo
             }
 
             tg.BackToPreviousTelegram();
+            fug.ResetAllFUState();
 
             //reset ui
             HideTelegramContent();
-            ResetAllFUState();
             ClearAllSentOutTelegramsOnUI();
 
             RollBackSequenceSteps();
@@ -199,14 +200,6 @@ namespace TelegramDemo
             }
         }
 
-        private void ResetAllFUState()
-        {
-            foreach (FunctionUnit fu in fuDic.Values)
-            {
-                fu.ResetFUState();
-            }
-        }
-
         private void RefreshSequenceStepGroup(string sequenceFileFullName)
         {
             sequenceStepCounter = 1;
@@ -224,8 +217,8 @@ namespace TelegramDemo
 
         private void RefreshFunctionUnitAndTelegramGroup(string sequenceFileFullName)
         {
-            fuDic = FunctionUnitBuilder.CreateFunctionUnits(sequenceFileFullName);
-            tg = TelegramGroupBuilder.CreateTelegramGroup(sequenceFileFullName, fuDic);
+            fug = FunctionUnitGroupBuilder.CreateFunctionUnits(sequenceFileFullName);
+            tg = TelegramGroupBuilder.CreateTelegramGroup(sequenceFileFullName, fug.FunctionUnitDic);
         }
 
         private void UpdateFUStateAfterTelegramSentOut(List<Telegram> sentOutTelegrams)
@@ -366,10 +359,10 @@ namespace TelegramDemo
         {
             arcnetDic.Clear();
 
-            int distanceBetweenFU = WIDTH_FU_GROUP_CANVAS / fuDic.Keys.Count;
+            int distanceBetweenFU = WIDTH_FU_GROUP_CANVAS / fug.FUCount;
             int fuLocationStep = 0;
 
-            foreach (FunctionUnit fu in fuDic.Values)
+            foreach (FunctionUnit fu in fug.AllFUs)
             {
                 this.c1.Children.Add(fu.FULabel);
                 this.c1.Children.Add(fu.StateText);

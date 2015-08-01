@@ -57,6 +57,7 @@
     </ApplicationDefinition>
     <Compile Include="Common\StepState.cs" />
     <Compile Include="Core\FunctionUnit.cs" />
+    <Compile Include="Core\FunctionUnitGroup.cs" />
     <Compile Include="Core\SequenceStep.cs" />
     <Compile Include="Core\SequenceStepGroup.cs" />
     <Compile Include="Core\Telegram.cs" />
@@ -64,7 +65,7 @@
       <DependentUpon>TelegramContent.xaml</DependentUpon>
     </Compile>
     <Compile Include="Core\TelegramGroup.cs" />
-    <Compile Include="Util\FunctionUnitBuilder.cs" />
+    <Compile Include="Util\FunctionUnitGroupBuilder.cs" />
     <Compile Include="Util\SequenceStepGroupBuilder.cs" />
     <Compile Include="Util\TelegramGroupBuilder.cs" />
     <Page Include="Common\TelegramContent.xaml">

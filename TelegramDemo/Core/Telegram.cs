@@ -12,7 +12,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using TelegramDemo.Common;
 
-namespace TelegramDemo.Common
+namespace TelegramDemo.Core
 {
     public class Telegram
     {
